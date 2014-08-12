@@ -1,6 +1,7 @@
-# `ensurer` - ensure that your values are as expected at runtime.
+# The `ensurer` R package
+### Ensure that your values are as expected at runtime.
 
-`ensurer` is a smalle utility package for `R` which provides a simple 
+`ensurer` is a small utility package for `R` which provides a simple 
 and light-weight mechanism for ensuring certain aspects of values at runtime.
 
 `R` does not provide any mechanism for type-safety and since it is not
