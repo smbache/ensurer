@@ -11,7 +11,7 @@ have different return types for different sitations.
  
 As an example, a query to a database or the scraping of a website might 
 not return valid data, where "validity" can refer to a number of conditions.
-It might a positive or certain number of records; that all cases are complete;
+It might be a positive or certain number of records; that all cases are complete;
 that some column is weekly increasing; or simply that the result is a 
 `data.frame`.
 
