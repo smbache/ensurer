@@ -37,8 +37,14 @@ ensuring <- function(...)
 			conditions <- lapply(`__conditions__`, eval, environment())
 			passed     <- vapply(conditions, isTRUE, logical(1))
 			if (!all(passed)) {
-				failed <- unlist(vapply(`__conditions__`[which(!passed)], deparse, character(1), nlines = 1L))
+				
+				failed <- unlist(vapply(`__conditions__`[which(!passed)], 
+																deparse, 
+																character(1),
+																nlines = 1L))
+				
 				msg <- sprintf("The following condition(s) failed:\n%s\n", 
+											 
 											 paste(paste("\t", failed), collapse = "\n"))
 				stop(msg, call. = FALSE)
 			}
