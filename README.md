@@ -44,7 +44,7 @@ The easiest way to install `ensurer` is using the `devtools` package:
     devtools::install_github("smbache/ensurer")
 
 
-# Examples
+# Basic Examples
 
 The following example shows how to define a contract ensuring that its input
 is square, and how to use it.
@@ -84,7 +84,10 @@ mimic the `iris` data in certain ways:
     head(iris) %>%
       ensure_as_iris
 
-You can add several ensuring contracts:
+There is a special named argument `fail_with` which can be used to overrule the default
+behavior when conditions are not met; see below.
+
+You can also add several ensuring contracts to a value:
 
     new_data <-
       iris %>% 
@@ -105,3 +108,25 @@ Whenever a contract is violated the error will specify which conditions were not
     Error: The following condition(s) failed:
 	all(. < 50)
 	all(.%%2 == 0) 
+
+# Tweeking behavior when conditions fail
+
+In some cases it may be too drastic to fail when conditions are violated. It can also 
+be the case that some action is desired before an error is raised.
+For these purposes it is possible to add the named parameter `fail_with` to `ensure_that` and
+`ensuring`; it can be either a function or a value. When a function is specified it must 
+accept a single argument which is of type `simpleError`.
+
+    # Using a function to overrule default behavior:
+    emailer <- function(e) { <email the error information etc here>; stop(e) }
+	
+	new_value <-
+      risky_action %>%
+      ensure(is_valid(.),  
+             fail_with = emailer)
+
+    # Maybe accept NA as value; but not some other garbage:
+    new_value <-
+      risky_action %>%
+      ensure(is_valid(.),  
+             fail_with = NA)
