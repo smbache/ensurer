@@ -27,6 +27,8 @@ ensuring <- function(...)
 		stop("At least one condition is needed for an ensurance.", call. = FALSE)
 		
 	local({
+		fail_with <- function(e) stop(e)
+		
 		if (sum(named) > 0)
 			for (i in which(named))
 				assign(names[i], eval(dots[[i]]), environment())
@@ -43,10 +45,14 @@ ensuring <- function(...)
 																character(1),
 																nlines = 1L))
 				
-				msg <- sprintf("The following condition(s) failed:\n%s\n", 
-											 
+				msg <- sprintf("The following condition(s) failed:\n%s\n", 											 
 											 paste(paste("\t", failed), collapse = "\n"))
-				stop(msg, call. = FALSE)
+				
+				. <- 
+					if (is.function(fail_with))
+						fail_with(simpleError(msg, call = FALSE))
+					else
+						fail_with
 			}
 			.
 		}
