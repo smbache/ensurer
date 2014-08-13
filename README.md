@@ -1,5 +1,9 @@
-# The `ensurer` R package
+The `ensurer` R package
+=======================
+
 ### Ensure that your values are as expected at runtime.
+
+[![Build Status](https://travis-ci.org/smbache/ensurer.png?branch=master)](https://travis-ci.org/smbache/ensurer)
 
 `ensurer` is a small utility package for `R` which provides a simple 
 and light-weight mechanism for ensuring certain aspects of values at runtime.
