@@ -20,14 +20,16 @@ that some column is weekly increasing; or simply that the result is a
 `data.frame`.
 
 If one does not deal with these ambiguities and risks appropriately,
-some resulting errors may be hard to track down. It is desirable to 
+some resulting errors may be hard to track down and may propergate in
+unexpected ways. It is desirable to 
 get an error as soon as a value does not have the correct type or 
 does not satisfy certain criteria.
  
 "Ensuring values" is here meant as a "contract", or a set of conditions,
-such that if a value does not comply an error is raised instantly. 
-An ensuring contract (a function) is created with `ensuring` (ideal for 
-multiple use or readability with complex contracts). 
+such that if a value does not comply an error is raised instantly
+(unless special behavior is specified for the failure). 
+An ensuring contract (a function) is created with the `ensuring` function
+(ideal for multiple use or readability with complex contracts). 
  
 It is also possible to ensure properties on the fly using `ensure_that`
 (ideal for simple, one-time contracts).
@@ -39,7 +41,9 @@ This package is not meant as a substitute for unit testing, and great
 packages for this already exist, e.g. `testthat` by Hadley Wickham.
 The `ensurer` package is ideal for scripts or programs where runtime
 conditions may break the functionality, and where errors should be
-raised as soon and clear as possible.
+raised as soon and clear as possible. Although a side-effect,
+It is my experience that it also promotes better design decisions
+at outset, and helps catch coding errors early on.
 
 # Installation
 
@@ -54,7 +58,7 @@ The following example shows how to define a contract ensuring that its input
 is square, and how to use it.
 
     library(magrittr) # for the pipe -> cleaner semantics
-    library(ensurer)  # for ensuring values.
+    library(ensurer) 
 
     # read `<-` as "is":
     # To reference the value being evaluated, use the `.` placeholder.
@@ -68,10 +72,13 @@ is square, and how to use it.
     matrix(1:20, 4, 5) %>% 
       ensure_square
 
-Several conditions can be specified:
+Several conditions can be specified, each separated with a comma:
 
     ensure_square <- ensuring(is.matrix(.), 
                               NCOL(.) == NROW(.))
+
+Note that *all* conditions are tested to provide the most feedback upon failure.
+If "short-circuits" are desired, one can add more (seperate) ensuring contracts.
 
 Sometimes it can be handy to use other objects in the conditions, either computing them 
 on the fly, or just abbreviating the names. In the example below, data is ensured to 
