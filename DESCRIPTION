@@ -9,5 +9,6 @@ Description: Add simple runtime contracts to R values. These ensure that values
     fulfil certain conditions, or raise an appropriate error.
 License: MIT + file LICENSE
 Suggests:
-    magrittr
+    magrittr,
+    testthat
 ByteCompile: Yes

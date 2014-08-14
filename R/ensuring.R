@@ -19,39 +19,38 @@
 #' @export
 ensuring <- function(...)
 {
-	parent <- parent.frame()
 	dots   <- eval(substitute(alist(...)))
 	names  <- names(dots)
 	named  <- if (is.null(names)) rep(FALSE, length(dots)) else names != ""
 	
-	dots[named] <- lapply(dots[named], eval, envir = parent, enclos = parent)
-		
 	if (sum(!named) == 0)
 		stop("At least one condition is needed for an ensurance.", call. = FALSE)
 		
-	local({
-		`__falsify__` <- function(any.) FALSE
+	env <- new.env(parent = parent.frame())
+	env[["__self"]] <- env
+	env[["__conditions"]] <- dots[!named]
+	env[["fail_with"]] <- function(e) stop(e)
+	
+	if (sum(named) > 0)
+		for (i in which(named))
+			assign(names[i], eval(dots[[i]], env, env), env)
+	
+	with(env, {
 		
-		`__verify__`  <- function(cond, env) 
-			tryCatch(isTRUE(eval(cond, env, env)), 
-			  			 warning = `__falsify__`, 
-							 error   = `__falsify__`)
-		
-		`__conditions__` <- dots[!named]
-		
-		fail_with <- function(e) stop(e)
-		
-		if (sum(named) > 0)
-			for (i in which(named))
-				assign(names[i], dots[[i]], environment())
+		`__falsify` <- function(any.) FALSE
+		`__verify`  <- function(cond) tryCatch(isTRUE(eval(cond)), 
+                                           warning = `__falsify`, 
+                                           error   = `__falsify`)
 		
 		function(.) {
-			passed <- 
-				vapply(`__conditions__`, `__verify__`, logical(1), environment())
+			
+			`__self`[["."]] <- .
+			
+			passed <- vapply(`__conditions`, `__verify`, logical(1))
 			
 			if (!all(passed)) {
 				
-				failed <- unlist(vapply(`__conditions__`[which(!passed)], 
+				failed <- unlist(vapply(`__conditions`[which(!passed)], 
 																deparse, 
 																character(1),
 																nlines = 1L))
@@ -59,11 +58,13 @@ ensuring <- function(...)
 				msg <- sprintf("The following condition(s) failed:\n%s\n", 											 
 											 paste(paste("\t", failed), collapse = "\n"))
 				
-				. <- if (is.function(fail_with))
-						   fail_with(simpleError(msg))
-					   else
-						   fail_with
+				. <- 
+					if (is.function(fail_with)) 
+						fail_with(simpleError(msg))
+					else 
+						fail_with
 			}
+			
 			return(.)
 		}
 	})
