@@ -22,6 +22,9 @@
 #' @export
 ensure_that <- function(value., ...)
 {
-	e <- ensuring(...)
+	parent <- parent.frame()
+	dots   <- eval(substitute(alist(...)))
+	e      <- eval(as.call(c(quote(ensuring), dots)), parent, parent)
+	
 	e(value.)
 }
