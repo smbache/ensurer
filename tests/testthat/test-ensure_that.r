@@ -16,7 +16,6 @@ test_that("ensure_that works", {
 	
 	ensure_data_validity <- function(x, data_template)
 	{
-		data_template <- data_template
 		ensure_that(x,
 								identical(class(.), class(tpl)), 
 								identical(names(.), names(tpl)),

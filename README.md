@@ -134,3 +134,36 @@ accept a single argument which is of type `simpleError`.
       risky_action %>%
       ensure(is_valid(.),  
              fail_with = NA)
+
+# Slightly more advanced contracts
+Sometimes it can be useful to extend or wrap the `ensurer` functions. The following 
+example shows how to make a templated contract ensuring that an object is of the correct
+"data class" (`data.frame`, `data.table` etc) and has the correct column 
+names and column classes, based on a template (an instance with these properties with 
+0 or more rows).
+
+    ensure_data_validity <- function(x, data_template)
+	{
+		# note the abbreviation "tpl" which is not necessary, but 
+        # compresses the conditions slightly.
+		ensure_that(x,
+			identical(class(.), class(tpl)), 
+			identical(names(.), names(tpl)),
+			identical(sapply(., class), sapply(tpl, class)),
+			tpl = data_template)
+	}
+
+
+Now, suppose we have a proto-type/template of a `data.frame` which we want to use
+as the definition of how the result of some statement should be. Here we just use 
+the ever-so-popular `iris` data (but you could think of a SQL query, or web scrape, 
+etc):
+
+    # The template:
+    iris_template <- iris[0L, ]
+
+	# The (not so) risky data extracting call, with the ensuring contract:
+	new_data <-
+      iris %>%
+      head(10) %>%
+      ensure_data_validity(iris_template)
