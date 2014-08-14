@@ -22,6 +22,7 @@ ensuring <- function(...)
 	dots  <- eval(substitute(alist(...)))
 	names <- names(dots)
 	named <- if (is.null(names)) rep(FALSE, length(dots)) else names != ""
+	parent <- parent.frame()
 	
 	if (sum(!named) == 0)
 		stop("At least one condition is needed for an ensurance.", call. = FALSE)
@@ -31,7 +32,7 @@ ensuring <- function(...)
 		
 		if (sum(named) > 0)
 			for (i in which(named))
-				assign(names[i], eval(dots[[i]]), environment())
+				assign(names[i], eval(dots[[i]], parent, parent), environment())
 		
 		`__conditions__` <- dots[!named]
 		
