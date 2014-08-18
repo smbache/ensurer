@@ -133,13 +133,13 @@ accept a single argument which is of type `simpleError`.
 	
 	new_value <-
       risky_action %>%
-      ensure(is_valid(.),  
+      ensure_that(is_valid(.),  
              fail_with = emailer)
 
     # Maybe accept NA as value; but not some other garbage:
     new_value <-
       risky_action %>%
-      ensure(is_valid(.),  
+      ensure_that(is_valid(.),  
              fail_with = NA)
 
 # Slightly more advanced contracts
