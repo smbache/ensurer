@@ -1,23 +1,24 @@
-#' Make a contract ensuring certain properties of a value.
+#' Make a contract which ensures that certain conditions are fulfilled.
 #'
 #' @param ... conditions which must pass for the ensuring contract to be 
 #'        fulfilled. Any named argument will treated as values available 
 #'        when evaluating the conditions. To reference the value itself
-#'        use the dot-placeholder, `.`
+#'        use the dot-placeholder, \code{`.`}. The special name \code{fail_with}
+#'        is reserved for modifying behaviour on failure.
 #' @return an ensuring function
-#' @rdname ensuring
+#' @rdname ensures_that
 #' @examples
 #' \dontrun{
 #' library(magrittr)
 #' 
-#' # Ensures a matrix is square. Read `<-` as "is".
-#' ensure_square <- ensuring(NCOL(.) == NROW(.))
+#' # Ensures that a matrix is square. 
+#' ensure_square <- ensures_that(NCOL(.) == NROW(.))
 #' 
 #' diag(4) %>%
 #'   ensure_square
 #' }
 #' @export
-ensuring <- function(...)
+ensures_that <- function(...)
 {
 	dots   <- eval(substitute(alist(...)))
 	names  <- names(dots)
@@ -59,10 +60,11 @@ ensuring <- function(...)
 											 paste(paste("\t", failed), collapse = "\n"))
 				
 				. <- 
-					if (is.function(fail_with)) 
+					if (is.function(fail_with)) { 
 						fail_with(simpleError(msg))
-					else 
+					} else {
 						fail_with
+					}
 			}
 			
 			return(.)

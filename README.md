@@ -28,7 +28,7 @@ does not satisfy certain criteria.
 "Ensuring values" is here meant as a "contract", or a set of conditions,
 such that if a value does not comply an error is raised instantly
 (unless special behavior is specified for the failure). 
-An ensuring contract (a function) is created with the `ensuring` function
+An ensuring contract (a function) is created with the `ensures_that` function
 (ideal for multiple use or readability with complex contracts). 
  
 It is also possible to ensure properties on the fly using `ensure_that`
@@ -60,9 +60,8 @@ is square, and how to use it.
     library(magrittr) # for the pipe -> cleaner semantics
     library(ensurer) 
 
-    # read `<-` as "is":
     # To reference the value being evaluated, use the `.` placeholder.
-    ensure_square <- ensuring(NCOL(.) == NROW(.))
+    ensure_square <- ensures_that(NCOL(.) == NROW(.))
 
 	# try it out:
 	diag(5) %>%
@@ -74,7 +73,7 @@ is square, and how to use it.
 
 Several conditions can be specified, each separated with a comma:
 
-    ensure_square <- ensuring(is.matrix(.), 
+    ensure_square <- ensures_that(is.matrix(.), 
                               NCOL(.) == NROW(.))
 
 Note that *all* conditions are tested to provide the most feedback upon failure.
@@ -84,10 +83,10 @@ Sometimes it can be handy to use other objects in the conditions, either computi
 on the fly, or just abbreviating the names. In the example below, data is ensured to 
 mimic the `iris` data in certain ways:
 
-    # named arguments in the ensuring call become values that are available in the
+    # named arguments in the ensures_that call become values that are available in the
     # conditions; here `i` is such an argument. 
     ensure_as_iris <- 
-      ensuring(ncol(.) == ncol(i) && 
+      ensures_that(ncol(.) == ncol(i) && 
                all(sapply(., class) == sapply(i, class)), 
                i = iris[numeric(0), ])
 	
@@ -125,7 +124,7 @@ Whenever a contract is violated the error will specify which conditions were not
 In some cases it may be too drastic to fail when conditions are violated. It can also 
 be the case that some action is desired before an error is raised.
 For these purposes it is possible to add the named parameter `fail_with` to `ensure_that` and
-`ensuring`; it can be either a function or a value. When a function is specified it must 
+`ensures_that`; it can be either a function or a value. When a function is specified it must 
 accept a single argument which is of type `simpleError`.
 
     # Using a function to overrule default behavior:

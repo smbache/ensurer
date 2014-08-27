@@ -10,5 +10,7 @@ Description: Add simple runtime contracts to R values. These ensure that values
 License: MIT + file LICENSE
 Suggests:
     magrittr,
-    testthat
+    testthat,
+    knitr
+VignetteBuilder: knitr
 ByteCompile: Yes

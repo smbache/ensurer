@@ -21,7 +21,7 @@
 #' 
 #' "Ensuring values" is here meant as a "contract", or a set of conditions,
 #' such that if a value does not comply an error is raised instantly. 
-#' An ensuring contract (a function) is created with \code{\link{ensuring}} 
+#' An ensuring contract (a function) is created with \code{\link{ensures_that}} 
 #' (ideal for multiple use or readability with complex contracts). 
 #' 
 #' It is also possible to ensure properties on the fly using 
