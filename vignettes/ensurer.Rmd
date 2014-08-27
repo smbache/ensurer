@@ -1,13 +1,12 @@
----
-title: "The ensurer package"
-author: "Stefan Holst Milton Bache"
-date: "Wednesday, August 27, 2014"
-output:
-  html_document:
-    highlight: espresso
-    self_contained: no
-  pdf_document: default
----
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{The ensurer}
+-->
+
+The `ensurer` package
+=======================
+
+*Stefan Holst Milton bache. August, 2014*
 
 # Introduction
 The `R` programming language is becoming an integrated part of data solutions
