@@ -1,3 +1,8 @@
+---
+output:
+  html_document:
+    self_contained: no
+---
 <!--
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{The ensurer}
@@ -11,31 +16,35 @@ The `ensurer` package
 # Introduction
 The `R` programming language is becoming an integrated part of data solutions
 and analyses in many production environments. This is no surprise: it is very 
-powerful and tasks are often very quickly accomplished with `R` when comparing 
-to its competitors, and is therefore the tool of choice for many statisticians,
+powerful and goals are often very quickly accomplished with `R` compared to many 
+of its competitors, and is therefore the tool of choice for many statisticians,
 data scientists, and the like.
 
 A common argument against it, however, is the lack of e.g. type safety, and 
-a compiler to ensure that the code is correct. To make the situation even 
-more dangerous, it is very common in `R` that functions accept different
+a compiler that guards against many potential code problems. 
+To make the situation even 
+more dangerous, it is very common in `R` to have functions that accept different
 types for the same argument, and they may even return different types depending
-on various circumstances. The very large community, which is one `R`'s strengths,
+on various inputs and circumstances. 
+The very large community, which is one `R`'s strengths,
 can also dangerous when developers adhere to different principles, styles,
 and standards.
 
-When putting an `R` program into prodcution one should therefore be aware of
-the various sources of risk. External data sources or schematics may change; 
+When putting an `R` program into production one should therefore be cautious
+and aware of the various sources of risk. 
+External data sources or schematics may change; 
 packages on which you depend may change; resources may be temporarily 
 unavailable, etc. While there is little hope to solve these kinds of problems
 altogether, it can be essential become aware of issues as soon as they arise
-and take proper action. In particular, unexpected bahavior may not 
-itself raise an error but may result in corrupted data which may propergate,
-and when errors occur down the road the initial source of trouble can be
+and take proper action. In particular, unexpected behavior may not 
+itself raise an error (due to the lack of type safety) 
+but may result in "corrupted"" data which may propagate,
+and when errors occur down the road the initial source of the problem can be
 hard and/or time consuming to track down.
 
 The `ensurer` package has one aim: to make it as simple as possible to
 ensure expected/needed/desired properties of your data, and to take proper 
-action upon failure to comply.
+action upon failure to comply
 
 # Basics
 The `ensurer` package does not depend on other packages, but its semantics are
@@ -50,8 +59,8 @@ Usage is simple. There are only two functions to remember:
     2. ensures_that: function(...)
 
 The first takes a value (`value.`) and a set of conditions (`...`) which are
-verifyied for the value. Upon success, the value itself is returned and upon
-failure an error is raised (default behaviour, which can be modified.)
+verified for the value. Upon success, the value itself is returned and upon
+failure an error is raised (default behavior, which can be modified.)
 
 Stating the conditions is simple, each are expressions which result in 
 `TRUE` or `FALSE` and are separated with commas (technical note: conditions
@@ -60,7 +69,7 @@ as this will count as failure.) To reference the value itself, use the
 dot-placeholder (`.`). 
 
 As an example, suppose you have a function `get_matrix` which is supposed to
-return a square matrix. The funcion may read an external text file, or 
+return a square matrix. The function may read an external text file, or 
 otherwise be vulnerable to data corruption. Suppose that you need the 
 matrix to be square, and you need it to be numeric. Here's how:
 
@@ -70,8 +79,8 @@ matrix to be square, and you need it to be numeric. Here's how:
                   is.numeric(.))
 
 If `get_matrix` returns valid data, everything is fine. But suppose
-a character somehow snuck its way in, coercing everything to the character type.
-In this case the default behaviour is to raise an error with details on which
+a character somehow found its way in, coercing everything to the character type.
+In this case the default behavior is to raise an error with details on which
 conditions failed (all will be tested, even if previous ones fail). 
 In this case the error is:
 
@@ -99,18 +108,18 @@ Here is how the first example is made without the pipe operator, `%>%`:
 
 
 # Controlling failure
-The main purpose of the `ensurer` is to esure that values are as they are
+The main purpose of the `ensurer` is to ensure that values are as they are
 expected, and if not alert the stakeholder(s) immediately. The default
-behaviour is therefore to raise an error. There could be several reasons 
+behavior is therefore to raise an error. There could be several reasons 
 to overrule this default, e.g. you may wish to send an email on error, or
 you might want to accept some default value if the desired value is not
 available.
 
-The `ensurer` has a simple mechanism for changing the behaviour: 
+The `ensurer` has a simple mechanism for changing the behavior: 
 specify the named argument `fail_with` in the call to `ensure_that` or 
 `ensures_that`. It is possible to pass in a value which will be returned
 (e.g. an empty `data.frame` with the correct columns, or maybe even just
-`NA`). More often, however, more dynamic behaviour is needed, and for 
+`NA`). More often, however, more dynamic behavior is needed, and for 
 this on passes a function of a single argument, which will be used 
 for a `simpleError` object (the one that is raised by default.):
 
