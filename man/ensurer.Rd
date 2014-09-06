@@ -18,7 +18,7 @@ As an example, a query to a database or the scraping of a website might
 not return valid data, where "validity" can refer to a number of conditions.
 It might a positive or certain number of records; that all cases are complete;
 that some column is weekly increasing; or simply that the result is a
-`data.frame`.
+\code{data.frame}.
 
 If one does not deal with these ambiguities and risks appropriately,
 some resulting errors may be hard to track down. It is desirable to
@@ -41,6 +41,8 @@ packages for this already exist, e.g. \code{testthat} by Hadley Wickham.
 The ensurer package is meant as a simple and ideal tool for scripts or
 programs where runtime conditions may break the functionality, and
 where errors should be raised as soon and clear as possible.
+
+For a more thorough introduction, see \code{vignette(ensurer)}.
 }
 \author{
 Stefan Holst Milton Bache <stefan@stefanbache.dk>

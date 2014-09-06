@@ -1,7 +1,5 @@
 ---
-output:
-  html_document:
-    self_contained: no
+output: html_document
 ---
 <!--
 %\VignetteEngine{knitr}
@@ -26,8 +24,8 @@ To make the situation even
 more dangerous, it is very common in `R` to have functions that accept different
 types for the same argument, and they may even return different types depending
 on various inputs and circumstances. 
-The very large community, which is one `R`'s strengths,
-can also dangerous when developers adhere to different principles, styles,
+The very large community, which is one of `R`'s strengths,
+can also be dangerous when developers adhere to different principles, styles,
 and standards.
 
 When putting an `R` program into production one should therefore be cautious
@@ -35,16 +33,16 @@ and aware of the various sources of risk.
 External data sources or schematics may change; 
 packages on which you depend may change; resources may be temporarily 
 unavailable, etc. While there is little hope to solve these kinds of problems
-altogether, it can be essential become aware of issues as soon as they arise
+altogether, it can be essential *become aware* of issues as soon as they arise
 and take proper action. In particular, unexpected behavior may not 
 itself raise an error (due to the lack of type safety) 
-but may result in "corrupted"" data which may propagate,
+but may result in "corrupted" data which may propagate,
 and when errors occur down the road the initial source of the problem can be
 hard and/or time consuming to track down.
 
 The `ensurer` package has one aim: to make it as simple as possible to
 ensure expected/needed/desired properties of your data, and to take proper 
-action upon failure to comply
+action upon failure to comply.
 
 # Basics
 The `ensurer` package does not depend on other packages, but its semantics are
@@ -58,15 +56,18 @@ Usage is simple. There are only two functions to remember:
     1. ensure_that:  function(value., ...)
     2. ensures_that: function(...)
 
-The first takes a value (`value.`) and a set of conditions (`...`) which are
-verified for the value. Upon success, the value itself is returned and upon
+The first (in imperitive form) takes a value (`value.`) and a set of 
+conditions (`...`) which are verified for the value. Upon success, 
+the value itself is returned and upon
 failure an error is raised (default behavior, which can be modified.)
+The second (in present tense) takes only the conditions and creates a 
+function which can be reused to ensure these.
 
-Stating the conditions is simple, each are expressions which result in 
-`TRUE` or `FALSE` and are separated with commas (technical note: conditions
-are checked with `isTRUE`, and conditions therefore not result in vectors
-as this will count as failure.) To reference the value itself, use the 
-dot-placeholder (`.`). 
+Stating the conditions is simple, each is an expression which result in 
+`TRUE` or `FALSE` and they are separated with commas (technical note: conditions
+are checked with `isTRUE`, and conditions should therefore not result in vectors
+as this will count as failure even if all entries are `TRUE`.) 
+To reference the value itself, use the dot-placeholder (`.`). 
 
 As an example, suppose you have a function `get_matrix` which is supposed to
 return a square matrix. The function may read an external text file, or 
@@ -87,7 +88,8 @@ In this case the error is:
     Error: The following condition(s) failed:
 	    is.numeric(.)
 
-The second function, `ensures_that`, is ideal for creating reusable contracts,
+The second function, `ensures_that` (note present tense, not imperitive form), 
+is ideal for creating reusable contracts,
 so that the same conditions need not be specified several places with similar
 purpose. Using the above example, if several matrices need to be square and
 numeric, do:
@@ -99,13 +101,38 @@ numeric, do:
     m1 <- get_matrix()       %>% ensure_square_numeric
     m2 <- get_other_matrix() %>% ensure_square_numeric
 
-Here is how the first example is made without the pipe operator, `%>%`:
+Note how the present tense form, "ensure**s** that", and the imperitive form, 
+"ensure that" makes the statements very much like reuglar sentences.
+
+It is straight forward to combine contracts made with `ensures_that` with 
+on-the-fly additional conditions:
+
+    m3 <-
+      get_matrix() %>%
+      ensure_square_numeric %>%
+      ensure_that(all(. < 10))
+
+However, note that conditions stated in the same `ensure*` call are all 
+checked, i.e. in the following example the error received is not the same:
+
+    # Only the first error is recorded.
+    letters %>%
+      ensure_that(length(.) == 10) %>%
+      ensure_that(all(. == toupper(.)))
+
+    # Both errors are recorded.
+    letters %>%
+      ensure_that(length(.) == 10,
+                  all(. == toupper(.)))
+
+
+To round off this section, here is how the first example is made without 
+the pipe operator, `%>%`:
 
     the_matrix <- 
       ensure_that(get_matrix(), 
           NCOL(.) == NROW(.),
           is.numeric(.))
-
 
 # Controlling failure
 The main purpose of the `ensurer` is to ensure that values are as they are
@@ -117,7 +144,7 @@ available.
 
 The `ensurer` has a simple mechanism for changing the behavior: 
 specify the named argument `fail_with` in the call to `ensure_that` or 
-`ensures_that`. It is possible to pass in a value which will be returned
+`ensures_that`. It is possible to pass in a static value which will be returned
 (e.g. an empty `data.frame` with the correct columns, or maybe even just
 `NA`). More often, however, more dynamic behavior is needed, and for 
 this on passes a function of a single argument, which will be used 
@@ -132,25 +159,26 @@ for a `simpleError` object (the one that is raised by default.):
     }
     
     m1 <- 
-    	get_matrix() %>% 
-    	ensure_that(
-    			NCOL(.) == NROW(.),
-    			is.numeric(.),
-    			fail_with = square_failure)
-
-		m2 <-
       get_matrix() %>% 
       ensure_that(
-    			NCOL(.) == NROW(.),
-    			is.numeric(.),
-    			fail_with = diag(10))
+          NCOL(.) == NROW(.),
+          is.numeric(.),
+          fail_with = square_failure)
+
+    m2 <-
+      get_matrix() %>% 
+      ensure_that(
+          NCOL(.) == NROW(.),
+          is.numeric(.),
+          fail_with = diag(10))
 
 In some instances you may want to use the value itself in the error handler,
-although you don't know anything about it, except that it does not comply. 
+although you don't know anything about it, except that it does not comply
+with the conditions. 
 Therefore this should be done with care, and currently there is not direct
 access to it (as you may need to think twice before doing it.) In the above 
 example, the `square_failure` does not know about `.`, although you can 
-direct it to it using `get`:
+fetch it using `get`:
 
     square_failure <- function(e)
     {
@@ -174,4 +202,37 @@ It is also possible to use the dot `.` directly in anonymous error handlers
 defined directly in the call to e.g. `ensure_that`.
 
 # More advanced uses.
-...
+In this section it is shown how simple extensions to the functionality 
+provided by the `ensurer` can be used to make flexible, yet strict,
+safety mechanisms.
+
+A common task is to load data from one or more external sources, 
+say from a SQL database, process the data, combine it various ways, and then
+produce some result or analysis. This may even be bundled up in a package and
+used by someone else who is unaware of the underlying data sources.
+If a connection is broken, a schema has changed, or if somehow the data does 
+not come out as expected, the software will probably suffer from both
+lack of results and some useless error messages. One step towards avoid such
+a scenario is to ensure that all data that are pulled into the application are
+as expected; i.e. provide some "type safety" to the data objects, 
+say `data.frame`s.
+
+Something about templating...
+
+    iris_template <- 
+      data.frame(
+        Sepal.Length = numeric(0),
+        Sepal.Width  = numeric(0),
+        Petal.Length = numeric(0),
+        Petal.Width  = numeric(0),
+        Species      = 
+            factor(numeric(0), levels = c("setosa", "versicolor", "virginica"))
+    )
+
+    ensure_as_template <- function(x, tpl)
+      ensure_that(x,
+        identical(class(.), class(tpl)),
+        identical(sapply(., class), sapply(tpl, class)),
+        identical(sapply(., levels), sapply(tpl, levels))
+      )
+
