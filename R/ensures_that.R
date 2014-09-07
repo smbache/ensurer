@@ -93,35 +93,51 @@ ensures_that <- function(...)
 		`__verify`  <- function(cond) tryCatch(isTRUE(eval(cond)),
                                            warning = `__falsify`,
                                            error   = `__falsify`)
+    `class<-`(
+  		function(.) {
 
-		function(.) {
+  			`__self`[["."]] <- .
 
-			`__self`[["."]] <- .
+  			passed <- vapply(`__conditions`, `__verify`, logical(1))
 
-			passed <- vapply(`__conditions`, `__verify`, logical(1))
+  			if (!all(passed)) {
 
-			if (!all(passed)) {
+  				failed <- unlist(vapply(`__conditions`[which(!passed)],
+  																deparse,
+  																character(1),
+  																nlines = 1L))
 
-				failed <- unlist(vapply(`__conditions`[which(!passed)],
-																deparse,
-																character(1),
-																nlines = 1L))
+  				msg <- sprintf(" The following condition(s) failed:\n%s\n%s",
+  											 paste(paste("\t *", failed), collapse = "\n"),
+                         if (is.character(err_desc) && err_desc[1L] != "")
+                           paste(" Description:", err_desc[1L])
+                         else "")
 
-				msg <- sprintf(" The following condition(s) failed:\n%s\n%s",
-											 paste(paste("\t *", failed), collapse = "\n"),
-                       if (is.character(err_desc) && err_desc[1L] != "")
-                         paste(" Description:", err_desc[1L])
-                       else "")
+  				. <-
+  					if (is.function(fail_with)) {
+  						fail_with(simpleError(msg))
+  					} else {
+  						fail_with
+  					}
+  			}
 
-				. <-
-					if (is.function(fail_with)) {
-						fail_with(simpleError(msg))
-					} else {
-						fail_with
-					}
-			}
-
-			return(.)
-		}
+  			return(.)
+  		}, value = c("ensurer", "function")
+    )
 	})
 }
+
+#' Print method for ensurer contracts
+#'
+#' @param x a function made with \code{ensures_that}
+#' @return x
+#'
+#' @export
+print.ensurer <- function(x)
+{
+  cat("Ensures that\n")
+  lapply(environment(x)[["__conditions"]],
+         function(e) cat("\t*", deparse(e, nlines = 1L), "\n"))
+  invisible(x)
+}
+
