@@ -11,7 +11,7 @@ and light-weight mechanism for ensuring certain aspects of values at runtime.
 `R` does not provide any mechanism for type-safety and since it is not
 a compiled language, the risk of having unexpected results is there at 
 runtime. `R` functions often accept different types for the same input and/or 
-have different return types for different sitations.
+have different return types for different situations.
  
 As an example, a query to a database or the scraping of a website might 
 not return valid data, where "validity" can refer to a number of conditions.
@@ -20,7 +20,7 @@ that some column is weekly increasing; or simply that the result is a
 `data.frame`.
 
 If one does not deal with these ambiguities and risks appropriately,
-some resulting errors may be hard to track down and may propergate in
+some resulting errors may be hard to track down and may propagate in
 unexpected ways. It is desirable to 
 get an error as soon as a value does not have the correct type or 
 does not satisfy certain criteria.
@@ -77,7 +77,7 @@ Several conditions can be specified, each separated with a comma:
                               NCOL(.) == NROW(.))
 
 Note that *all* conditions are tested to provide the most feedback upon failure.
-If "short-circuits" are desired, one can add more (seperate) ensuring contracts.
+If "short-circuits" are desired, one can add more (separate) ensuring contracts.
 
 Sometimes it can be handy to use other objects in the conditions, either computing them 
 on the fly, or just abbreviating the names. In the example below, data is ensured to 
@@ -119,7 +119,7 @@ Whenever a contract is violated the error will specify which conditions were not
 	all(. < 50)
 	all(.%%2 == 0) 
 
-# Tweeking behavior when conditions fail
+# Tweaking behavior when conditions fail
 
 In some cases it may be too drastic to fail when conditions are violated. It can also 
 be the case that some action is desired before an error is raised.
@@ -160,7 +160,7 @@ names and column classes, based on a template (an instance with these properties
 	}
 
 
-Now, suppose we have a proto-type/template of a `data.frame` which we want to use
+Now, suppose we have a prototype/template of a `data.frame` which we want to use
 as the definition of how the result of some statement should be. Here we just use 
 the ever-so-popular `iris` data (but you could think of a SQL query, or web scrape, 
 etc):
