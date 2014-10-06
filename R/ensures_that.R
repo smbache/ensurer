@@ -75,13 +75,8 @@ ensures_that <- function(...)
   if (sum(!named) == 0)
     stop("At least one condition is needed for an ensurance.", call. = FALSE)
 
-  env <- new.env(parent = parent.frame())
-  env[["__self"]] <- env
+  env <- ensurer_env(parent = parent.frame())
   env[["__conditions"]] <- dots[!named]
-
-  # names which are meant to be replacable using named arguments.
-  env[["fail_with"]] <- function(e) stop(e)
-  env[["err_desc"]] <- ""
 
   if (sum(named) > 0)
     for (i in which(named))
@@ -89,10 +84,6 @@ ensures_that <- function(...)
 
   with(env, {
 
-    `__falsify` <- function(any.) FALSE
-    `__verify`  <- function(cond) tryCatch(isTRUE(eval(cond)),
-                                           warning = `__falsify`,
-                                           error   = `__falsify`)
     `class<-`(
       function(.) {
 
@@ -107,7 +98,8 @@ ensures_that <- function(...)
                                   character(1),
                                   nlines = 1L))
 
-          msg <- sprintf(" The following condition(s) failed:\n%s\n%s",
+          msg <- sprintf("conditions failed for call '%s':\n%s\n%s",
+                         `__format_call`(sys.call(1L)),
                          paste(paste("\t *", failed), collapse = "\n"),
                          if (is.character(err_desc) && err_desc[1L] != "")
                            paste(" Description:", err_desc[1L])
@@ -140,4 +132,3 @@ print.ensurer <- function(x)
          function(e) cat("\t*", deparse(e, nlines = 1L), "\n"))
   invisible(x)
 }
-
