@@ -75,11 +75,20 @@ ensures_that <- function(...)
   if (sum(!named) == 0)
     stop("At least one condition is needed for an ensurance.", call. = FALSE)
 
+  has_custom_msg <-
+    which(vapply(dots,
+                 function(cl) is.call(cl) && identical(cl[[1L]], quote(`~`)),
+                 logical(1L)))
+
+  dots[has_custom_msg] <-
+    lapply(has_custom_msg,
+           function(i) `attr<-`(dots[[i]][[2L]], "custom_msg", dots[[i]][[3L]]))
+
   env <- ensurer_env(parent = parent.frame())
 
   contracts <-
     vapply(dots,
-          function(cl) is.call(cl) && identical(cl[[1]], quote(`+`)),
+          function(cl) is.call(cl) && identical(cl[[1L]], quote(`+`)),
           logical(1))
 
   if (sum(contracts) > 0)
@@ -119,9 +128,14 @@ ensures_that <- function(...)
         if (!all(passed)) {
 
           failed <- unlist(vapply(`__conditions`[which(!passed)],
-                                  deparse,
-                                  character(1),
-                                  nlines = 1L))
+                                  function(cond) {
+                                    custom <- attr(cond, "custom_msg")
+                                    if (is.null(custom))
+                                      deparse(cond, nlines = 1L)
+                                    else
+                                      custom
+                                  },
+                                  character(1)))
 
           msg <- sprintf("conditions failed for call '%s':\n%s\n%s",
                          `__format_call`(sys.call(1L)),
