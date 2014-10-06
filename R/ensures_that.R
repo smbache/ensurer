@@ -76,7 +76,32 @@ ensures_that <- function(...)
     stop("At least one condition is needed for an ensurance.", call. = FALSE)
 
   env <- ensurer_env(parent = parent.frame())
-  env[["__conditions"]] <- dots[!named]
+
+  contracts <-
+    vapply(dots,
+          function(cl) is.call(cl) && identical(cl[[1]], quote(`+`)),
+          logical(1))
+
+  if (sum(contracts) > 0)
+    dots[contracts] <- lapply(dots[contracts],
+                              function(cl) eval(cl[[2L]], env, env))
+
+  contracts_conditions <-
+    unlist(lapply(dots[contracts], function(contract) {
+      environment(contract)[["__conditions"]]
+    }))
+
+  reserved <-
+    c("__conditions", "__falsify", "__format_call", "__self",
+      "__verify", "err_desc", "fail_with")
+
+  for (contract in which(contracts)) {
+    values <- ls(environment(dots[[contract]]))
+    for (value in values[!values %in% c(reserved)])
+      assign(value, environment(dots[[contract]])[[value]], env)
+  }
+
+  env[["__conditions"]] <- c(dots[!named & !contracts], contracts_conditions)
 
   if (sum(named) > 0)
     for (i in which(named))
