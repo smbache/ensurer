@@ -13,6 +13,14 @@
 #' \code{err_desc} \tab can be specified to append a description upon error.
 #' This can be useful when the same conditions occur at different places.
 #' }
+#' It is also possible to specify custom error message to conditions
+#' to make them more readable. To do this use a formula
+#' \code{condition ~ message}, where \code{message} is a single character value.
+#'
+#' Finally, you can add an existing contract as a condition argument, which
+#' will add the conditions from the existing contract to the new contract
+#' (along with any assigned values). To do this use (unary) \code{+} to indicate
+#' that an argument is a contract. See example below.
 #' @param value. The value which is to be ensured.
 #' @param ... conditions which must pass for the ensuring contract to be
 #'        fulfilled. Any named argument will treated as values available
@@ -64,6 +72,12 @@
 #'   1:10 %>%
 #'   ensure_that(all(. < 5), fail_with = email_err)
 #'
+#' # Two similar contracts, one extending the other.
+#' # Note also that custom message is used for A
+#' A <- ensures_that(all(.) > 0 ~ "Not all values are positive)
+#' B <- ensures_that(!is.na(.) ~ "There are missing values", +A)
+#'
+#' B(c(-5:5, NA))
 #' }
 #' @export
 ensures_that <- function(...)
@@ -130,10 +144,10 @@ ensures_that <- function(...)
           failed <- unlist(vapply(`__conditions`[which(!passed)],
                                   function(cond) {
                                     custom <- attr(cond, "custom_msg")
-                                    if (is.null(custom))
+                                    if (is.null(custom) || !is.character(custom))
                                       deparse(cond, nlines = 1L)
                                     else
-                                      custom
+                                      custom[1L]
                                   },
                                   character(1)))
 
