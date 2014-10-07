@@ -94,11 +94,12 @@ ensures_that <- function(...)
                  function(cl) is.call(cl) && identical(cl[[1L]], quote(`~`)),
                  logical(1L)))
 
+  env <- ensurer_env(parent = parent.frame())
+
   dots[has_custom_msg] <-
     lapply(has_custom_msg,
-           function(i) `attr<-`(dots[[i]][[2L]], "custom_msg", dots[[i]][[3L]]))
-
-  env <- ensurer_env(parent = parent.frame())
+           function(i) `attr<-`(dots[[i]][[2L]], "custom_msg",
+                                eval(dots[[i]][[3L]], env, env)))
 
   contracts <-
     vapply(dots,
