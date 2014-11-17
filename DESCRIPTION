@@ -14,3 +14,4 @@ Suggests:
     knitr
 VignetteBuilder: knitr
 ByteCompile: Yes
+URL: https://github.com/smbache/ensurer
