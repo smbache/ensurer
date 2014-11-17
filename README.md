@@ -1,7 +1,7 @@
 The `ensurer` R package
 =======================
 
-### Ensure that your values are as expected at runtime.
+### Ensure values at runtime.
 
 [![Build Status](https://travis-ci.org/smbache/ensurer.png?branch=master)](https://travis-ci.org/smbache/ensurer)
 
