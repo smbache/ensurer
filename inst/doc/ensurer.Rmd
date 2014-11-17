@@ -62,13 +62,13 @@ Usage is simple. There are only two functions to remember:
 2. ensures_that: function(..., fail_with, err_desc)          [short-hand alias: ensures]
 ```
 
-The first (in imperative form) takes a value (`value.`) and a set of 
+The first (in imperitive form) takes a value (`value.`) and a set of 
 conditions (`...`) which are verified for the value. Upon success, 
 the value itself is returned and upon
 failure an error is raised (default behavior, which can be modified.)
 The second (in present tense) takes only the conditions and creates a 
 function which can be reused to ensure these. The arguments `fail_with` and 
-`err_desc` can be (but need not be) specified to alter the default behavior.
+`err_desc` can be (but need not be) specified to alter the default bahaviour.
 
 Stating the conditions is simple, each is an expression which result in 
 `TRUE` or `FALSE` and they are separated with commas (technical note: conditions
@@ -99,7 +99,7 @@ In this case the error is:
    * is.numeric(.)
 ``` 
 
-The second function, `ensures_that` (note: present tense, not imperative form), 
+The second function, `ensures_that` (note: present tense, not imperitive form), 
 is ideal for creating reusable contracts,
 so that the same conditions need not be specified several places with similar
 purpose. Using the above example, if several matrices need to be square and
@@ -114,8 +114,8 @@ m1 <- get_matrix()       %>% ensure_square_numeric
 m2 <- get_other_matrix() %>% ensure_square_numeric
 ```
 
-Note how the present tense form, "ensure**s** that", and the imperative form, 
-"ensure that" makes the statements very much like regular sentences.
+Note how the present tense form, "ensure**s** that", and the imperitive form, 
+"ensure that" makes the statements very much like reuglar sentences.
 
 It is straight forward to combine contracts made with `ensures_that` with 
 on-the-fly additional conditions:
@@ -242,7 +242,7 @@ specifying the argument `fail_with` to `ensure_that` or
 (e.g. an empty `data.frame` with the correct columns, or maybe even just
 `NA`). More often, however, more dynamic behavior is needed, and for 
 this on passes a function of a single argument, which will be applied
-to a `simpleError` object (the one that is raised by default):
+to a `simpleError` object (the one that is raised by default.):
 
 ```{r eval=FALSE}
 square_failure <- function(e)
@@ -294,7 +294,7 @@ square_failure <- function(e)
 }
 ```
 
-It is also possible to use the dot, `.`, directly in anonymous error handlers
+It is also possible to use the dot `.` directly in anonymous error handlers
 defined directly in the call to e.g. `ensure_that`.
 
 One can add a description to the error message without having to specify 
@@ -346,7 +346,7 @@ a scenario is to ensure that all data that are pulled into the application are
 as expected; i.e. provide some "type safety" to the data objects, 
 say `data.frame`s.
 
-Often you can gain a lot of security in your code if you can specify a 
+Oftem you can gain a lot of security in your code if you can specify a 
 template for risky objects which specifies the necessary details of such objects.
 An obvious example is a `data.frame`: you may need to require specific names 
 and types of the columns and/or that it is non-empty. Maybe you have several

@@ -1,4 +1,4 @@
-#' ensurer - ensure values are as expected at runtime
+#' ensurer - ensure values at runtime
 #'
 #' ensurer is a small utility package for R which provides a simple
 #' and light-weight mechanism for ensuring certain aspects of values at runtime.

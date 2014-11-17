@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>The ensurer package</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{The ensurer}
+-->
+
+<h1>The ensurer package</h1>
+
+<p><em>Stefan Holst Milton Bache. September 2014.</em></p>
+
+<h1>Introduction</h1>
+
+<p>The <code>R</code> programming language is becoming an integrated part of data solutions
+and analyses in many production environments. This is no surprise: it is very 
+powerful and goals are often very quickly accomplished with <code>R</code> compared to many 
+of its competitors, and it is therefore a primary tool of choice for many 
+statisticians, data scientists, and the like.</p>
+
+<p>A common argument against it, however, is the lack of e.g. type safety, and 
+a compiler that guards against many potential code problems. 
+To make the situation even 
+more dangerous, it is very common in <code>R</code> to have functions that accept different
+types for the same argument, and they may even return different types depending
+on various inputs and circumstances. 
+The very large community, which is one of <code>R</code>&#39;s strengths,
+should also raise caution, as developers adhere to different principles, styles,
+and standards.</p>
+
+<p>When putting an <code>R</code> program into production one should therefore be careful
+and aware of the various sources of risk. 
+External data sources or schematics may change; 
+packages on which you depend may change; resources may be temporarily 
+unavailable, etc. While there is little hope to solve these kinds of problems
+altogether, it can be essential <em>become aware</em> of issues as soon as they arise
+and take proper action. In particular, unexpected behavior may not 
+itself raise an error (due to the lack of type safety) 
+but may result in &ldquo;corrupted&rdquo; data which may propagate,
+and when errors occur down the road, the initial source of the problem can be
+hard and/or time consuming to track down.</p>
+
+<p>The <code>ensurer</code> package has one aim: to make it as simple as possible to
+ensure expected/needed/desired properties of your data, and to take proper 
+action upon failure to comply.</p>
+
+<h1>Basics</h1>
+
+<p>The <code>ensurer</code> package does not depend on other packages, but its semantics are
+designed with <code>%&gt;%</code>, the <code>magrittr</code> pipe, in mind. This will make it very 
+natural to attach an ensuring contract to the result of a data pipeline 
+before assigning it to a name, or returning it from a function, etc.
+The examples below will use <code>%&gt;%</code> but it should be clear how to proceed without.</p>
+
+<p>Usage is simple. There are only two functions to remember:</p>
+
+<pre><code class="r">1. ensure_that:  function(value., ..., fail_with, err_desc)  [short-hand alias: ensure]
+2. ensures_that: function(..., fail_with, err_desc)          [short-hand alias: ensures]
+</code></pre>
+
+<p>The first (in imperitive form) takes a value (<code>value.</code>) and a set of 
+conditions (<code>...</code>) which are verified for the value. Upon success, 
+the value itself is returned and upon
+failure an error is raised (default behavior, which can be modified.)
+The second (in present tense) takes only the conditions and creates a 
+function which can be reused to ensure these. The arguments <code>fail_with</code> and 
+<code>err_desc</code> can be (but need not be) specified to alter the default bahaviour.</p>
+
+<p>Stating the conditions is simple, each is an expression which result in 
+<code>TRUE</code> or <code>FALSE</code> and they are separated with commas (technical note: conditions
+are checked with <code>isTRUE</code>, and conditions should therefore not result in vectors
+as this will count as failure even if all entries are <code>TRUE</code>.) 
+To reference the value itself, use the dot-placeholder (<code>.</code>). </p>
+
+<p>As an example, suppose you have a function <code>get_matrix</code> which is supposed to
+return a square matrix. The function may read an external text file, or 
+otherwise be vulnerable to data corruption. Suppose that you need the 
+matrix to be square, and you need it to be numeric. Here&#39;s how:</p>
+
+<pre><code class="r">the_matrix &lt;-
+  get_matrix() %&gt;%
+  ensure_that(is.numeric(.), 
+              NCOL(.) == NROW(.))
+</code></pre>
+
+<p>If <code>get_matrix</code> returns valid data, everything is fine. But suppose
+a character somehow found its way in, coercing everything to the character type.
+In this case the default behavior is to raise an error with details on which
+conditions failed (all will be tested, even if previous ones fail). 
+In this case the error is:</p>
+
+<pre><code class="r"> Error: conditions failed for call &#39;get_matrix %&gt;% ensu .. NCOL(.) == NROW(.))&#39;:
+   * is.numeric(.)
+</code></pre>
+
+<p>The second function, <code>ensures_that</code> (note: present tense, not imperitive form), 
+is ideal for creating reusable contracts,
+so that the same conditions need not be specified several places with similar
+purpose. Using the above example, if several matrices need to be square and
+numeric, do:</p>
+
+<pre><code class="r">ensure_square_numeric &lt;- 
+  ensures_that(NCOL(.) == NROW(.),
+               is.numeric(.))
+
+m1 &lt;- get_matrix()       %&gt;% ensure_square_numeric
+m2 &lt;- get_other_matrix() %&gt;% ensure_square_numeric
+</code></pre>
+
+<p>Note how the present tense form, &ldquo;ensure<strong>s</strong> that&rdquo;, and the imperitive form, 
+&ldquo;ensure that&rdquo; makes the statements very much like reuglar sentences.</p>
+
+<p>It is straight forward to combine contracts made with <code>ensures_that</code> with 
+on-the-fly additional conditions:</p>
+
+<pre><code class="r">m3 &lt;-
+  get_matrix() %&gt;%
+  ensure_square_numeric %&gt;%
+  ensure_that(all(. &lt; 10))
+</code></pre>
+
+<p>However, note that conditions stated in the same <code>ensure*</code> call are all 
+checked, i.e. in the following example the error received is not the same:</p>
+
+<pre><code class="r"># Only the first error is recorded.
+letters %&gt;%
+  ensure_that(length(.) == 10) %&gt;%
+  ensure_that(all(. == toupper(.)))
+
+# Both errors are recorded.
+letters %&gt;%
+  ensure_that(length(.) == 10,
+              all(. == toupper(.)))
+</code></pre>
+
+<p>To round off this section, here is how the first example is made without 
+the pipe operator, <code>%&gt;%</code>:</p>
+
+<pre><code class="r">the_matrix &lt;- 
+  ensure_that(get_matrix(), 
+      NCOL(.) == NROW(.),
+      is.numeric(.))
+</code></pre>
+
+<h1>Naming arguments</h1>
+
+<p>It is possible to assign names for use in the conditions, such that no
+external variable declaration is needed for additional information needed
+in the conditions. This can be used to make the code more readable, or
+to avoid the same computation twice. To assign a value in the <code>ensure(s)_that</code>
+call, simply use named arguments (and avoid <code>fail_with</code> and <code>err_desc</code>):</p>
+
+<pre><code class="r">some_object &lt;- 
+  some_computation() %&gt;%
+  ensure_that(foo(a) == bar(a), a = baz(x, y, z))
+</code></pre>
+
+<h1>Adding existing contracts to new contracs</h1>
+
+<p>Sometimes it is useful to have a set of contracts for different purposes,
+and combine them in situations where more than one of them apply.
+As described above, one can chain together multiple <code>ensure_that</code> 
+statements, but in that situation <code>ensurer</code> will not check all conditions
+from all contracts. Another option is to add existing contracts, constructed
+with <code>ensures_that</code> to a new <code>ensure(s)_that</code> call. To let <code>ensurer</code> 
+know that the argument is an existing contract to be added, use a unary 
+<code>+</code> operator:</p>
+
+<pre><code class="r">matrix_is_square &lt;- ensures_that(NROW(.) == NCOL(.))
+all_positive     &lt;- ensures_that(all(. &gt; 0))
+
+
+matrix(runif(16), 4, 4) %&gt;% 
+  ensure(+matrix_is_square, +all_positive)
+</code></pre>
+
+<p>Any named arguments in an added contract will also be available in the
+new contract.</p>
+
+<h1>Customizing individual condition messages</h1>
+
+<p>To make the description of each of the failed conditions more user-friendly
+and readable, <code>ensurer</code> lets you specify a description to conditions
+where the code is not transparent enough. To do this use a formula as
+condition: <code>condition ~ &quot;message if fails&quot;</code>. As an example:</p>
+
+<pre><code class="r">ensure_character &lt;- 
+  ensures_that(is.character(.) ~ &quot;vector must be of character type.&quot;)
+
+1:10 %&gt;% ensure_character
+
+Error: conditions failed for call &#39;1:10 %&gt;% ensure_character&#39;:
+   * vector must be of character type. 
+</code></pre>
+
+<h1>Ensuring function return values</h1>
+
+<p>The <code>ensures_that</code> function also provides a useful mechanism for ensuring 
+the characteristics of function return values. This will both make functions 
+safer, but will also provide users with specific knowledge about what they
+can expect of your functions. Here are a few pseudo examples:</p>
+
+<pre><code class="r">`: numeric` &lt;- ensures_that(is.numeric(.))
+
+get_quote &lt;- function(ticker) `: numeric`({
+  # some code that extracts latest quote for the ticker
+})
+
+
+`: square matrix` &lt;- ensures_that(is.numeric(.),
+                                  is.matrix(.),
+                                  NCOL(.) == NROW(.))
+
+var_covar &lt;- function(vec) `: square matrix`({
+  # some code that produces a variance-covariance matrix.
+})                                 
+</code></pre>
+
+<p>While the naming convention used above is not necessary, it is expressive
+when used for this purpose; but there is nothing different about the 
+contracts produced by <code>ensures_that</code>. Of course, another more standard option 
+is to ensure the return value at the end of the function, yet this won&#39;t 
+be as transparent to the user of the function.</p>
+
+<h1>Controlling failure</h1>
+
+<p>The main purpose of the <code>ensurer</code> is to ensure that values are as they are
+expected, and if not alert the stakeholder(s) immediately. The default
+behavior is therefore to raise an error. There could be several reasons 
+to overrule this default, e.g. you may wish to send an email on error, or
+you might want to accept some default value if the desired value is not
+available.</p>
+
+<p>The <code>ensurer</code> has a simple mechanism for changing the behavior by 
+specifying the argument <code>fail_with</code> to <code>ensure_that</code> or 
+<code>ensures_that</code>. It is possible to pass in a static value which will be returned
+(e.g. an empty <code>data.frame</code> with the correct columns, or maybe even just
+<code>NA</code>). More often, however, more dynamic behavior is needed, and for 
+this on passes a function of a single argument, which will be applied
+to a <code>simpleError</code> object (the one that is raised by default.):</p>
+
+<pre><code class="r">square_failure &lt;- function(e)
+{
+    # suppose you had an email function:
+    email(&quot;maintainer@company.com&quot;, subject = &quot;error&quot;, body = e$message)
+    stop(e)
+}
+
+m1 &lt;- 
+  get_matrix() %&gt;% 
+  ensure_that(
+      NCOL(.) == NROW(.),
+      is.numeric(.),
+      fail_with = square_failure)
+
+m2 &lt;-
+  get_matrix() %&gt;% 
+  ensure_that(
+      NCOL(.) == NROW(.),
+      is.numeric(.),
+      fail_with = diag(10))
+</code></pre>
+
+<p>In some instances you may want to use the value itself in the error handler,
+although you don&#39;t know anything about it, except that it does not comply
+with the conditions. 
+Therefore this should be done with care, and currently there is not direct
+access to it (as you may need to think twice before doing it.) In the above 
+example, the <code>square_failure</code> does not know about <code>.</code>, although you can 
+fetch it using <code>get</code>:</p>
+
+<pre><code class="r">square_failure &lt;- function(e)
+{
+  # fetch the dot.
+  . &lt;- get(&quot;.&quot;, parent.frame())
+
+  # compose a message detailing also the class of the object returned.
+  msg &lt;- 
+    sprintf(&quot;Here is what I know:\n%s\nValue class: %s.&quot;,
+            e$message, 
+            class(.) %&gt;% paste(collapse = &quot;, &quot;)) # there could be several.
+
+  # suppose you had an email function:
+  email(&quot;maintainer@company.com&quot;, subject = &quot;error&quot;, body = msg)
+
+  stop(e)
+}
+</code></pre>
+
+<p>It is also possible to use the dot <code>.</code> directly in anonymous error handlers
+defined directly in the call to e.g. <code>ensure_that</code>.</p>
+
+<p>One can add a description to the error message without having to specify 
+an error function, which can be useful if the same conditions are used 
+several places in your code, or simply to add some information to the 
+user about what could be the cause of the problem. This is done by 
+specifying the named argument <code>err_desc</code>.
+For example, <code>RODBC</code>&#39;s <code>sqlQuery</code> returns a <code>data.frame</code> on success
+and a character string on failure. Suppose you have a function which makes use
+of this to fetch some results, and you wish to make your function safe using
+the <code>ensurer</code>:</p>
+
+<pre><code class="r">`: sql result` &lt;- 
+    ensures_that(is.data.frame(.),
+                 err_desc = &quot;SQL error.&quot;)
+
+daily_results &lt;- function(day) `: sql result`({
+    sql &lt;- sprintf(&quot;SELECT * FROM RESULTS WHERE DAY = &#39;%s&#39;&quot;,
+                   format(as.Date(day)))
+    ch &lt;- RODBC::odbcDriverConnect(&quot;connection_string&quot;)
+    on.exit(RODBC::odbcClose(ch))
+    RODBC::sqlQuery(ch, sql)
+})
+</code></pre>
+
+<p>The error would look like this:</p>
+
+<pre><code class="r">daily_results(&quot;2014-10-01&quot;)
+
+ Error: conditions failed for call &#39;daily_results(&quot;2014-10-01&quot;)&#39;:
+   * is.data.frame(.)
+ Description: SQL error. 
+</code></pre>
+
+<h1>Building on the ensurer functions</h1>
+
+<p>In this section it is shown how simple extensions to the functionality 
+provided by the <code>ensurer</code> can be used to make flexible, yet strict,
+safety mechanisms.</p>
+
+<p>A common task is to load data from one or more external sources, 
+say from a SQL database, process the data, combine it various ways, and then
+produce some result or analysis. This may even be bundled up in a package and
+used by someone else who is unaware of the underlying data sources.
+If a connection is broken, a schema has changed, or if somehow the data does 
+not come out as expected, the software will probably suffer from both
+lack of results and some useless error messages. One step towards avoid such
+a scenario is to ensure that all data that are pulled into the application are
+as expected; i.e. provide some &ldquo;type safety&rdquo; to the data objects, 
+say <code>data.frame</code>s.</p>
+
+<p>Oftem you can gain a lot of security in your code if you can specify a 
+template for risky objects which specifies the necessary details of such objects.
+An obvious example is a <code>data.frame</code>: you may need to require specific names 
+and types of the columns and/or that it is non-empty. Maybe you have several
+important datasets that each are specific, yet all require the same type 
+of safety. Here is an example of how to specify a &ldquo;template&rdquo; and an ensuring 
+function that compares an object to such a template.</p>
+
+<pre><code class="r">iris_template &lt;- 
+  data.frame(
+    Sepal.Length = numeric(0),
+    Sepal.Width  = numeric(0),
+    Petal.Length = numeric(0),
+    Petal.Width  = numeric(0),
+    Species      = 
+        factor(numeric(0), levels = c(&quot;setosa&quot;, &quot;versicolor&quot;, &quot;virginica&quot;))
+)
+
+ensure_as_template &lt;- function(x, tpl)
+  ensure_that(x,
+    is.data.frame(.),
+    identical(class(.), class(tpl)),
+    identical(sapply(., class), sapply(tpl, class)),
+    identical(sapply(., levels), sapply(tpl, levels))
+  )
+
+iris %&gt;% ensure_as_template(iris_template)
+</code></pre>
+
+<p>The <code>ensure_as_template</code> is general enough, to accept any other <code>data.frame</code>
+with a corresponding template. Packages that exposes functions which return
+<code>data.frames</code> could define such templates (internally or externally) and 
+ensure data validity this way.</p>
+
+</body>
+
+</html>

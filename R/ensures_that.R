@@ -5,28 +5,31 @@
 #' is used to make reusable "contracts" (functions) which can subsequently be
 #' applied to values, see examples.
 #'
-#' @details There are special named arguments which can be used to
-#' tweak the behavior upon failure:
-#' \tabular{ll}{
-#' \code{fail_with} \tab a static value, or a unary function which accepts a
-#' \code{simpleError} as argument.\cr
-#' \code{err_desc} \tab can be specified to append a description upon error.
-#' This can be useful when the same conditions occur at different places.
-#' }
-#' It is also possible to specify custom error message to conditions
-#' to make them more readable. To do this use a formula
+#' @details
+#' It is possible to specify custom error message to specific conditions
+#' to make them more readable and user-friendly. To do this use a formula
 #' \code{condition ~ message}, where \code{message} is a single character value.
 #'
-#' Finally, you can add an existing contract as a condition argument, which
+#' Existing contracts can be added as a condition argument, which
 #' will add the conditions from the existing contract to the new contract
 #' (along with any assigned values). To do this use (unary) \code{+} to indicate
 #' that an argument is a contract. See example below.
+#'
+#' It is important to note that a condition is only satisfied if it
+#' evaluates to \code{TRUE} (tested with \code{isTRUE}), i.e. a
+#' vector with several \code{TRUE}s will fail, so be sure to use
+#' \code{all} or \code{any} in such a case.
+#'
+#' The functions \code{ensure} and \code{ensures} are short-hand aliases for
+#' their \code{*_that} counterparts.
 #' @param value. The value which is to be ensured.
 #' @param ... conditions which must pass for the ensuring contract to be
 #'        fulfilled. Any named argument will treated as values available
 #'        when evaluating the conditions. To reference the value itself
 #'        use the dot-placeholder, \code{`.`}. See 'Details' for some special
 #'        named arguments.
+#' @param fail_with A unary function (accepting a \code{simpleError}) or a value.
+#' @param err_desc A character string with an additional error description.
 #' @return \code{ensures_that} returns an ensuring function; \code{ensure_that}
 #' returns the value itself on success.
 #' @rdname ensures_that
@@ -74,27 +77,27 @@
 #'
 #' # Two similar contracts, one extending the other.
 #' # Note also that custom message is used for A
-#' A <- ensures_that(all(.) > 0 ~ "Not all values are positive)
-#' B <- ensures_that(!is.na(.) ~ "There are missing values", +A)
+#' A <- ensures_that(all(.) > 0 ~ "Not all values are positive")
+#' B <- ensures_that(!any(is.na(.)) ~ "There are missing values", +A)
 #'
 #' B(c(-5:5, NA))
 #' }
 #' @export
-ensures_that <- function(...)
+ensures_that <- function(..., fail_with = function(e) stop(e), err_desc = "")
 {
   dots   <- eval(substitute(alist(...)))
   names  <- names(dots)
   named  <- if (is.null(names)) rep(FALSE, length(dots)) else names != ""
 
   if (sum(!named) == 0)
-    stop("At least one condition is needed for an ensurance.", call. = FALSE)
+    stop("At least one condition is needed to ensure value.", call. = FALSE)
 
   has_custom_msg <-
     which(vapply(dots,
                  function(cl) is.call(cl) && identical(cl[[1L]], quote(`~`)),
                  logical(1L)))
 
-  env <- ensurer_env(parent = parent.frame())
+  env <- ensurer_env(parent = parent.frame(), fail_with, err_desc)
 
   dots[has_custom_msg] <-
     lapply(has_custom_msg,
@@ -103,8 +106,8 @@ ensures_that <- function(...)
 
   contracts <-
     vapply(dots,
-          function(cl) is.call(cl) && identical(cl[[1L]], quote(`+`)),
-          logical(1))
+           function(cl) is.call(cl) && identical(cl[[1L]], quote(`+`)),
+           logical(1))
 
   if (sum(contracts) > 0)
     dots[contracts] <- lapply(dots[contracts],
@@ -143,13 +146,7 @@ ensures_that <- function(...)
         if (!all(passed)) {
 
           failed <- unlist(vapply(`__conditions`[which(!passed)],
-                                  function(cond) {
-                                    custom <- attr(cond, "custom_msg")
-                                    if (is.null(custom) || !is.character(custom))
-                                      deparse(cond, nlines = 1L)
-                                    else
-                                      custom[1L]
-                                  },
+                                  `__condition_message`,
                                   character(1)))
 
           msg <- sprintf("conditions failed for call '%s':\n%s\n%s",
@@ -173,13 +170,18 @@ ensures_that <- function(...)
   })
 }
 
+#' @rdname ensures_that
+#' @export
+ensures <- ensures_that
+
 #' Print method for ensurer contracts
 #'
 #' @param x a function made with \code{ensures_that}
+#' @param ... not used.
 #' @return x
 #'
 #' @export
-print.ensurer <- function(x)
+print.ensurer <- function(x, ...)
 {
   cat("Ensures that\n")
   lapply(environment(x)[["__conditions"]],

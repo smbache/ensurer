@@ -3,10 +3,12 @@
 \alias{print.ensurer}
 \title{Print method for ensurer contracts}
 \usage{
-\method{print}{ensurer}(x)
+\method{print}{ensurer}(x, ...)
 }
 \arguments{
 \item{x}{a function made with \code{ensures_that}}
+
+\item{...}{not used.}
 }
 \value{
 x

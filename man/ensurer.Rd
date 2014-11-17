@@ -3,7 +3,7 @@
 \name{ensurer}
 \alias{ensurer}
 \alias{ensurer-package}
-\title{ensurer - ensure values are as expected at runtime}
+\title{ensurer - ensure values at runtime}
 \description{
 ensurer is a small utility package for R which provides a simple
 and light-weight mechanism for ensuring certain aspects of values at runtime.

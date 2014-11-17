@@ -1,32 +1,36 @@
 # Internal function for creating an environment for the ensures_that function.
-ensurer_env <- function(parent)
+#
+# @param parent The environment to use as parent for the ensurer environment.
+# @param fail_with A function or value to use on error.
+# @param err_desc A character string with an additional error description.
+# @return an environment used for evaluation of ensurer contracts.
+ensurer_env <- function(parent, fail_with, err_desc)
 {
   env <- new.env(parent = parent)
   env[["__self"]] <- env
 
-  # names which are meant to be replacable using named arguments.
-  env[["fail_with"]] <- function(e) stop(e)
-  env[["err_desc" ]] <- ""
+  # error handler or return value on failure.
+  env[["fail_with"]] <- fail_with
 
-  env[["__format_call"]] <- function(cl) {
-    call_string <- deparse(cl, nlines = 1L)
-    n <- nchar(call_string)
-    if (n > 41) {
-      snd_half <- substring(call_string, 19 + 5, n)
-      n2 <- nchar(snd_half)
-      paste(substring(call_string, 1, 18), "...",
-            substr(snd_half, max(n2 - 17, 1), n2))
-    } else {
-      call_string
-    }
-  }
+  # custom error description.
+  env[["err_desc" ]] <- err_desc
 
+
+  # utility function to format the call for the error description.
+  env[["__format_call"]] <- format_call
+
+  # utility function extract/create a condition's message.
+  env[["__condition_message"]] <- condition_message
+
+  # Function to return FALSE on any input.
   env[["__falsify"]] <- function(any.) FALSE
 
+  # Function to veryfy a conditon.
   env[["__verify"]] <-
     function(cond) tryCatch(isTRUE(eval(cond, env, env)),
                             warning = env[["__falsify"]],
                             error   = env[["__falsify"]])
 
+  # Return the environment.
   env
 }
