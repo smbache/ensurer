@@ -1,6 +1,6 @@
 Package: ensurer
 Type: Package
-Title: Ensure values are as expected at runtime
+Title: Ensure values at runtime
 Version: 1.0
 Date: 2014-11-17
 Author: Stefan Holst Milton Bache
