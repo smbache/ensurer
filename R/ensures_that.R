@@ -8,7 +8,7 @@
 #' @details There are special named arguments which can be used to
 #' tweak the behavior upon failure:
 #' \tabular{ll}{
-#' \code{fail_with} \tab a static value, or a unary function which accept a
+#' \code{fail_with} \tab a static value, or a unary function which accepts a
 #' \code{simpleError} as argument.\cr
 #' \code{err_desc} \tab can be specified to append a description upon error.
 #' This can be useful when the same conditions occur at different places.
