@@ -164,7 +164,7 @@ some_object <-
   ensure_that(foo(a) == bar(a), a = baz(x, y, z))
 ```
 
-# Adding existing contracts to new contracs
+# Adding existing contracts to new contracts
 Sometimes it is useful to have a set of contracts for different purposes,
 and combine them in situations where more than one of them apply.
 As described above, one can chain together multiple `ensure_that` 
