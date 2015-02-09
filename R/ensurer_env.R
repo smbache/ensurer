@@ -26,10 +26,15 @@ ensurer_env <- function(parent, fail_with, err_desc)
   env[["__falsify"]] <- function(any.) FALSE
 
   # Function to veryfy a conditon.
-  env[["__verify"]] <-
-    function(cond) tryCatch(isTRUE(eval(cond, env, env)),
+  env[["__verify"]] <- function(cond)
+  {
+    if (is.symbol(cond))
+      cond <- as.call(list(cond, quote(.)))
+
+    tryCatch(isTRUE(eval(cond, env, env)),
                             warning = env[["__falsify"]],
                             error   = env[["__falsify"]])
+  }
 
   # Return the environment.
   env
