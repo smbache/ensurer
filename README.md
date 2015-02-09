@@ -49,36 +49,41 @@ at outset, and helps catch coding errors early on.
 
 The easiest way to install `ensurer` is using the `devtools` package:
 
-    devtools::install_github("smbache/ensurer")
-
+```R
+devtools::install_github("smbache/ensurer")
+```
 
 # Basic Examples
 
 The following example shows how to define a contract ensuring that its input
 is square, and how to use it.
 
-    library(magrittr) # for the pipe -> cleaner semantics
-    library(ensurer) 
+```R
+library(magrittr) # for the pipe -> cleaner semantics
+library(ensurer) 
 
-    # To reference the value being evaluated, use the `.` placeholder.
-    ensure_square <- ensures_that(NCOL(.) == NROW(.))
+# To reference the value being evaluated, use the `.` placeholder.
+ensure_square <- ensures_that(NCOL(.) == NROW(.))
 
-	  # try it out:
-	  diag(5) %>%
-      ensure_square  # passes, so returns the diagonal matrix
+# try it out: 
+diag(5) %>%
+  ensure_square  # passes, so returns the diagonal matrix
 
-    # This won't work, and an error is raised.
-    matrix(1:20, 4, 5) %>% 
-      ensure_square
+# This won't work, and an error is raised.
+matrix(1:20, 4, 5) %>% 
+  ensure_square
 
-    # On the fly contracts:
-    matrix(1:4, 2, 2) %>%
-      ensure_that(is.matrix(.), all(is.numeric(.)))
+# On the fly contracts:
+matrix(1:4, 2, 2) %>%
+  ensure_that(is.matrix(.), all(is.numeric(.)))
+```
 
-Several conditions can be specified, each separated with a comma:
-
-    ensure_square <- ensures_that(is.matrix(.), 
+One can specify several conditions, each separated with a comma. Simple
+predicate functions can be used in abbreviated symbolic form, e.g as in the example below.
+```R
+ensure_square <- ensures_that(is.matrix, 
                               NCOL(.) == NROW(.))
+```
 
 Note that *all* conditions are tested to provide the most feedback upon failure.
 If "short-circuits" are desired, one can add more (separate) ensuring contracts.
