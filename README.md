@@ -91,7 +91,7 @@ If "short-circuits" are desired, one can add more (separate) ensuring contracts.
 # Types and type-safe functions (new, experimental, subject to change)
 A "type" is defined as objects satisfying the criteria of a corresponding
 ensurer contract which has the prefix `type_`.
-For example, an `foo` type will satisfy the conditions of
+For example, a `foo` type will satisfy the conditions of
 an ensurer contract `type_foo`. There are some built-in types, but
 new types are easily defined using `ensures`/`ensures_that` and
 adhering to the `type_` naming convention.
