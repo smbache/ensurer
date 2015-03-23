@@ -88,7 +88,37 @@ ensure_square <- ensures_that(is.matrix,
 Note that *all* conditions are tested to provide the most feedback upon failure.
 If "short-circuits" are desired, one can add more (separate) ensuring contracts.
 
-Special features include
+# Types and type-safe functions (new, experimental, subject to change)
+A "type" is defined as objects satisfying the criteria of a corresponding
+ensurer contract which has the prefix \code{type_}.
+For example, an \code{foo} type will satisfy the conditions of
+an ensurer contract `type_foo`. There are some built-in types, but
+new types are easily defined using `ensures`/`ensures_that` and
+adhering to the `type_` naming convention.
+
+Type-safe functions can be made with `function_`:
+```R
+f <- function_(a ~ integer, b ~ character: "Hello, World!", {
+  rep(b, a)
+})
+
+f(10) # fails
+f(10L) # works
+f(10L, "foo")
+
+type_lm <- ensures_that("lm" %in% class(.) ~ "Value is not a linear model.")
+safe_lmsummary <- function_(model ~ lm, {
+  summary(model)
+})
+
+safe_lmsummary(lm(Sepal.Length ~ ., iris))
+```
+
+The type `some` allows any value and can be used to allow unsafe inputs.
+(TODO: make `some` default when defaults are provided, already default when
+no default is provided.)
+ 
+# Special features include
 
 * Customizing error behavior
 * Easily combining several contracts
