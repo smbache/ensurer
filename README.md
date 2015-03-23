@@ -115,8 +115,8 @@ safe_lmsummary(lm(Sepal.Length ~ ., iris))
 ```
 
 The type `some` allows any value and can be used to allow unsafe inputs.
-(TODO: make `some` default when defaults are provided, already default when
-no default is provided.)
+(TODO: make `some` default type when default values are provided;
+already default type when no default value is provided.)
  
 # Special features include
 
