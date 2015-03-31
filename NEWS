@@ -1,0 +1,13 @@
+Version 1.1
+===========
+
+New features:
+* Allow short-hand notation for predicate functions, e.g.
+  `ensure(1:10, is.integer)` is equivalent to
+  `ensure(1:10, is.integer(.))`.
+
+
+Technical adjustments
+* The `value.` argument is renamed to `.` for consistency.
+* `ensure_that` can be imported without the need to also import
+  `ensures_that`.

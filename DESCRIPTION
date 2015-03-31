@@ -1,10 +1,10 @@
 Package: ensurer
 Type: Package
-Title: Ensure values at runtime
-Version: 1.0
+Title: Ensure Values at Runtime
+Version: 1.1
 Date: 2014-11-17
-Author: Stefan Holst Milton Bache
-Maintainer: Stefan Holst Milton Bache <stefan@stefanbache.dk>
+Author: Stefan Milton Bache
+Maintainer: Stefan Milton Bache <stefan@stefanbache.dk>
 Description: Add simple runtime contracts to R values. These ensure that values
     fulfil certain conditions and will raise appropriate errors if they do not.
 License: MIT + file LICENSE

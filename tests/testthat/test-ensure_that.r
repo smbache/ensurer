@@ -50,4 +50,6 @@ test_that("ensure(s)_that works", {
     "Not square"
   )
 
+  expect_identical(1:10, ensure(1:10, is.integer))
+
 })

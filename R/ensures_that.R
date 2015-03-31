@@ -22,7 +22,7 @@
 #'
 #' The functions \code{ensure} and \code{ensures} are short-hand aliases for
 #' their \code{*_that} counterparts.
-#' @param value. The value which is to be ensured.
+#' @param . The value which is to be ensured.
 #' @param ... conditions which must pass for the ensuring contract to be
 #'        fulfilled. Any named argument will treated as values available
 #'        when evaluating the conditions. To reference the value itself
