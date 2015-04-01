@@ -3,7 +3,9 @@
 #' Use \code{ensure_that} (imperitive form) to ensure conditions for
 #' a value "on the fly". The present tense form, \code{ensures_that}
 #' is used to make reusable "contracts" (functions) which can subsequently be
-#' applied to values, see examples.
+#' applied to values, see examples. It is also possible to check (rather than
+#' ensure) whether conditions are satisfied; the `check_that` function
+#' works like `ensure_that` but will return \code{TRUE} or \code{FALSE}.
 #'
 #' @details
 #' It is possible to specify custom error message to specific conditions
@@ -20,7 +22,7 @@
 #' vector with several \code{TRUE}s will fail, so be sure to use
 #' \code{all} or \code{any} in such a case.
 #'
-#' The functions \code{ensure} and \code{ensures} are short-hand aliases for
+#' The functions \code{ensure} \code{ensures}, and \code{check} are short-hand aliases for
 #' their \code{*_that} counterparts.
 #' @param . The value which is to be ensured.
 #' @param ... conditions which must pass for the ensuring contract to be
@@ -31,7 +33,8 @@
 #' @param fail_with A unary function (accepting a \code{simpleError}) or a value.
 #' @param err_desc A character string with an additional error description.
 #' @return \code{ensures_that} returns an ensuring function; \code{ensure_that}
-#' returns the value itself on success.
+#' returns the value itself on success. \code{check_that} returns \code{TRUE}
+#' on success, and \code{FALSE} otherwise.
 #' @rdname ensures_that
 #' @examples
 #' \dontrun{

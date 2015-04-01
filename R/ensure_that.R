@@ -18,3 +18,4 @@ ensure_that <- function(., ..., fail_with = function(e) stop(e), err_desc = "")
 #' @rdname ensures_that
 #' @export
 ensure <- ensure_that
+
