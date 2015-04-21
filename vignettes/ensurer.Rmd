@@ -1,7 +1,7 @@
 ---
 title: "The ensurer package"
 author: "Stefan Holst Milton Bache"
-date: "November, 2014"
+date: "This version: April, 2015"
 output: html_document
 ---
 
@@ -13,7 +13,7 @@ output: html_document
 The ensurer package
 ===================
 
-*Stefan Holst Milton Bache. September 2014.*
+*Stefan Holst Milton Bache. This version: April, 2015.*
 
 # Introduction
 The `R` programming language is becoming an integrated part of data solutions
@@ -58,11 +58,11 @@ The examples below will use `%>%` but it should be clear how to proceed without.
 Usage is simple. There are only two functions to remember:
 
 ```{r, eval=FALSE}
-1. ensure_that:  function(value., ..., fail_with, err_desc)  [short-hand alias: ensure]
-2. ensures_that: function(..., fail_with, err_desc)          [short-hand alias: ensures]
+1. ensure_that:  function(., ..., fail_with, err_desc)  [short-hand alias: ensure]
+2. ensures_that: function(..., fail_with, err_desc)     [short-hand alias: ensures]
 ```
 
-The first (in imperative form) takes a value (`value.`) and a set of 
+The first (in imperative form) takes a value (`.`) and a set of 
 conditions (`...`) which are verified for the value. Upon success, 
 the value itself is returned and upon
 failure an error is raised (default behavior, which can be modified.)
@@ -98,8 +98,17 @@ In this case the error is:
  Error: conditions failed for call 'get_matrix %>% ensu .. NCOL(.) == NROW(.))':
    * is.numeric(.)
 ``` 
+Simple predicate functions can also be used with a short-hand notation where
+the dot is omitted; here is the example above where numeric condition is
+changed:
+```{r, eval=FALSE}
+the_matrix <-
+  get_matrix() %>%
+  ensure_that(is.numeric,
+              NCOL(.) == NROW(.))
+```
 
-The second function, `ensures_that` (note: present tense, not imperative form), 
+The *second* function, `ensures_that` (note: present tense, not imperative form),
 is ideal for creating reusable contracts,
 so that the same conditions need not be specified several places with similar
 purpose. Using the above example, if several matrices need to be square and
@@ -142,14 +151,12 @@ letters %>%
               all(. == toupper(.)))
 ```
 
-To round off this section, here is how the first example is made without 
-the pipe operator, `%>%`:
-
+Sometimes it is useful to *check* whether a contract is satisfied, without
+*ensuring* that it is. For this purpose there is a function `check_that` which
+works like `ensure_that` but will return a logical indication of success:
 ```{r eval=FALSE}
-the_matrix <- 
-  ensure_that(get_matrix(), 
-      NCOL(.) == NROW(.),
-      is.numeric(.))
+if (check_that(my_sequence, is.numeric))
+  message("Success!")
 ```
 
 # Naming arguments
@@ -161,7 +168,7 @@ call, simply use named arguments (and avoid `fail_with` and `err_desc`):
 ```{r, eval = FALSE}
 some_object <- 
   some_computation() %>%
-  ensure_that(foo(a) == bar(a), a = baz(x, y, z))
+  ensure_that(foo(a, .) == bar(a, .), a = baz(x, y, z))
 ```
 
 # Adding existing contracts to new contracts

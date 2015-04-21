@@ -7,7 +7,7 @@
 \alias{ensure_that}
 \alias{ensures}
 \alias{ensures_that}
-\title{Ensure certain conditions for a value at runtime.}
+\title{Ensure Certain Conditions for a Value at Runtime.}
 \usage{
 check_that(., ...)
 
@@ -25,48 +25,54 @@ ensures(..., fail_with = function(e) stop(e), err_desc = "")
 \item{.}{The value which is to be ensured.}
 
 \item{...}{conditions which must pass for the ensuring contract to be
-fulfilled. Any named argument will treated as values available
-when evaluating the conditions. To reference the value itself
-use the dot-placeholder, \code{`.`}. See 'Details' for some special
-named arguments.}
+  fulfilled. Any named argument will treated as values available when
+  evaluating the conditions. To reference the value itself use the
+  dot-placeholder, \code{`.`}. See 'Details' for some special named
+  arguments.}
 
-\item{fail_with}{A unary function (accepting a \code{simpleError}) or a value.}
+\item{fail_with}{Either a unary function (accepting a \code{simpleError})
+  or a static value.}
 
 \item{err_desc}{A character string with an additional error description.}
 }
 \value{
 \code{ensures_that} returns an ensuring function; \code{ensure_that}
-returns the value itself on success. \code{check_that} returns \code{TRUE}
-on success, and \code{FALSE} otherwise.
+  returns the value itself on success. \code{check_that} returns \code{TRUE}
+  on success, and \code{FALSE} otherwise.
 }
 \description{
-Use \code{ensure_that} (imperitive form) to ensure conditions for
-a value "on the fly". The present tense form, \code{ensures_that}
-is used to make reusable "contracts" (functions) which can subsequently be
-applied to values, see examples. It is also possible to check (rather than
-ensure) whether conditions are satisfied; the `check_that` function
-works like `ensure_that` but will return \code{TRUE} or \code{FALSE}.
+Use \code{ensure_that} (imperitive form) to ensure conditions for a value "on
+the fly". The present tense form, \code{ensures_that} is used to make
+reusable "contracts" (functions) which can subsequently be applied to values;
+see examples below. It is also possible to check (rather than ensure) whether
+conditions are satisfied; the \code{check_that} function works like
+\code{ensure_that} but will return \code{TRUE} or \code{FALSE}.
 }
 \details{
-It is possible to specify custom error message to specific conditions
-to make them more readable and user-friendly. To do this use a formula
-\code{condition ~ message}, where \code{message} is a single character value.
+It is possible to specify custom error message for specific
+conditions to make them more readable and user-friendly. To do this use a
+formula \code{condition ~ err.message}, where \code{err.message} is a single
+character value.
 
-Existing contracts can be added as a condition argument, which
-will add the conditions from the existing contract to the new contract
-(along with any assigned values). To do this use (unary) \code{+} to indicate
-that an argument is a contract. See example below.
+Existing contracts can be added as a condition argument, which will add the
+conditions from the existing contract to the new contract (along with any
+assigned values). To do this use (unary) \code{+} to indicate that an
+argument is a contract. See example below.
 
-It is important to note that a condition is only satisfied if it
-evaluates to \code{TRUE} (tested with \code{isTRUE}), i.e. a
-vector with several \code{TRUE}s will fail, so be sure to use
-\code{all} or \code{any} in such a case.
+It is important to note that a condition is only satisfied if it evaluates to
+\code{TRUE} (tested with \code{isTRUE}), i.e. a vector with several
+\code{TRUE}s will fail, so be sure to use \code{all} or \code{any} in such a
+case.
 
-The functions \code{ensure} \code{ensures}, and \code{check} are short-hand aliases for
-their \code{*_that} counterparts.
+The functions \code{ensure} \code{ensures}, and \code{check} are short-hand
+aliases for their \code{*_that} counterparts.
 }
 \examples{
 \dontrun{
+
+ensure_that(1:10, is.integer)
+
+# Examples below will use the magrittr pipe
 library(magrittr)
 
 # Create a contract which can ensure that a matrix is square.

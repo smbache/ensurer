@@ -10,7 +10,7 @@ check_that <- function(., ...)
 
   check_ <- eval(cl, env, env)
 
-  !inherits(check_(.), "simpleError")
+  identical(FALSE, inherits(check_(.), c("error", "simpleError")))
 }
 
 #' @rdname ensures_that

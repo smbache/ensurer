@@ -1,6 +1,11 @@
-# Transform a call into a short version for an error message.
+# Format Call for Output
+#
+# This internal function transforms a call into a short version for
+# appropriate for the error message. It will estimate the width of the
+# output based on \code{getOption("width")} when formatting the call.
 #
 # @param cl a call
+#
 # @return a character string
 format_call <- function(cl)
 {
@@ -26,11 +31,13 @@ format_call <- function(cl)
   }
 }
 
-# Get the message associated with a condition.
+# Extract Message for a Condition.
 #
-# If it is missing, a message is created.
+# Some conditions have custom messages associated witg them. If so, this
+# function will get this message. If it is missing, a message is created.
 #
 # @param cond A condition
+#
 # @return a character string.
 condition_message <- function(cond) {
   custom <- attr(cond, "custom_msg")

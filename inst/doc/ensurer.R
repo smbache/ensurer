@@ -1,6 +1,6 @@
 ## ----, eval=FALSE--------------------------------------------------------
-#  1. ensure_that:  function(value., ..., fail_with, err_desc)  [short-hand alias: ensure]
-#  2. ensures_that: function(..., fail_with, err_desc)          [short-hand alias: ensures]
+#  1. ensure_that:  function(., ..., fail_with, err_desc)  [short-hand alias: ensure]
+#  2. ensures_that: function(..., fail_with, err_desc)     [short-hand alias: ensures]
 
 ## ----, eval=FALSE--------------------------------------------------------
 #  the_matrix <-
@@ -11,6 +11,12 @@
 ## ----eval=FALSE----------------------------------------------------------
 #   Error: conditions failed for call 'get_matrix %>% ensu .. NCOL(.) == NROW(.))':
 #     * is.numeric(.)
+
+## ----, eval=FALSE--------------------------------------------------------
+#  the_matrix <-
+#    get_matrix() %>%
+#    ensure_that(is.numeric,
+#                NCOL(.) == NROW(.))
 
 ## ----eval=FALSE----------------------------------------------------------
 #  ensure_square_numeric <-
@@ -38,15 +44,13 @@
 #                all(. == toupper(.)))
 
 ## ----eval=FALSE----------------------------------------------------------
-#  the_matrix <-
-#    ensure_that(get_matrix(),
-#        NCOL(.) == NROW(.),
-#        is.numeric(.))
+#  if (check_that(my_sequence, is.numeric))
+#    message("Success!")
 
 ## ----, eval = FALSE------------------------------------------------------
 #  some_object <-
 #    some_computation() %>%
-#    ensure_that(foo(a) == bar(a), a = baz(x, y, z))
+#    ensure_that(foo(a, .) == bar(a, .), a = baz(x, y, z))
 
 ## ----, eval = FALSE------------------------------------------------------
 #  matrix_is_square <- ensures_that(NROW(.) == NCOL(.))

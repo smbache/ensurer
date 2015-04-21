@@ -5,7 +5,7 @@ The `ensurer` R package
 
 [![Build Status](https://travis-ci.org/smbache/ensurer.png?branch=master)](https://travis-ci.org/smbache/ensurer)
 
-`ensurer` is a small utility package for `R` which provides a simple 
+`ensurer` is a utility package for `R` that provides a simple 
 and light-weight mechanism for ensuring certain aspects of values at runtime.
 
 `R` does not provide any mechanism for type-safety and since it is not
@@ -22,7 +22,7 @@ that some column is weekly increasing; or simply that the result is a
 If one does not deal with these ambiguities and risks appropriately,
 some resulting errors may be hard to track down and may propagate in
 unexpected ways. It is desirable to 
-get an error as soon as a value does not have the correct type or 
+get an error immediately when a value does not have the correct type or 
 does not satisfy certain criteria.
  
 "Ensuring values" is here meant as a "contract", or a set of conditions,
@@ -47,8 +47,12 @@ at outset, and helps catch coding errors early on.
 
 # Installation
 
-The easiest way to install `ensurer` is using the `devtools` package:
+Using CRAN:
+````R
+install.packages("ensurer")
+```
 
+Using GitHub and the `devtools` package (for the development version):
 ```R
 devtools::install_github("smbache/ensurer")
 ```

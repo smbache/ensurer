@@ -208,7 +208,7 @@ hr {
 
 <h1>The ensurer package</h1>
 
-<p><em>Stefan Holst Milton Bache. September 2014.</em></p>
+<p><em>Stefan Holst Milton Bache. This version: April, 2015.</em></p>
 
 <h1>Introduction</h1>
 
@@ -254,17 +254,17 @@ The examples below will use <code>%&gt;%</code> but it should be clear how to pr
 
 <p>Usage is simple. There are only two functions to remember:</p>
 
-<pre><code class="r">1. ensure_that:  function(value., ..., fail_with, err_desc)  [short-hand alias: ensure]
-2. ensures_that: function(..., fail_with, err_desc)          [short-hand alias: ensures]
+<pre><code class="r">1. ensure_that:  function(., ..., fail_with, err_desc)  [short-hand alias: ensure]
+2. ensures_that: function(..., fail_with, err_desc)     [short-hand alias: ensures]
 </code></pre>
 
-<p>The first (in imperitive form) takes a value (<code>value.</code>) and a set of 
+<p>The first (in imperative form) takes a value (<code>.</code>) and a set of 
 conditions (<code>...</code>) which are verified for the value. Upon success, 
 the value itself is returned and upon
 failure an error is raised (default behavior, which can be modified.)
 The second (in present tense) takes only the conditions and creates a 
 function which can be reused to ensure these. The arguments <code>fail_with</code> and 
-<code>err_desc</code> can be (but need not be) specified to alter the default bahaviour.</p>
+<code>err_desc</code> can be (but need not be) specified to alter the default behavior.</p>
 
 <p>Stating the conditions is simple, each is an expression which result in 
 <code>TRUE</code> or <code>FALSE</code> and they are separated with commas (technical note: conditions
@@ -293,7 +293,17 @@ In this case the error is:</p>
    * is.numeric(.)
 </code></pre>
 
-<p>The second function, <code>ensures_that</code> (note: present tense, not imperitive form), 
+<p>Simple predicate functions can also be used with a short-hand notation where
+the dot is omitted; here is the example above where numeric condition is
+changed:</p>
+
+<pre><code class="r">the_matrix &lt;-
+  get_matrix() %&gt;%
+  ensure_that(is.numeric,
+              NCOL(.) == NROW(.))
+</code></pre>
+
+<p>The <em>second</em> function, <code>ensures_that</code> (note: present tense, not imperative form),
 is ideal for creating reusable contracts,
 so that the same conditions need not be specified several places with similar
 purpose. Using the above example, if several matrices need to be square and
@@ -307,8 +317,8 @@ m1 &lt;- get_matrix()       %&gt;% ensure_square_numeric
 m2 &lt;- get_other_matrix() %&gt;% ensure_square_numeric
 </code></pre>
 
-<p>Note how the present tense form, &ldquo;ensure<strong>s</strong> that&rdquo;, and the imperitive form, 
-&ldquo;ensure that&rdquo; makes the statements very much like reuglar sentences.</p>
+<p>Note how the present tense form, &ldquo;ensure<strong>s</strong> that&rdquo;, and the imperative form, 
+&ldquo;ensure that&rdquo; makes the statements very much like regular sentences.</p>
 
 <p>It is straight forward to combine contracts made with <code>ensures_that</code> with 
 on-the-fly additional conditions:</p>
@@ -333,13 +343,12 @@ letters %&gt;%
               all(. == toupper(.)))
 </code></pre>
 
-<p>To round off this section, here is how the first example is made without 
-the pipe operator, <code>%&gt;%</code>:</p>
+<p>Sometimes it is useful to <em>check</em> whether a contract is satisfied, without
+<em>ensuring</em> that it is. For this purpose there is a function <code>check_that</code> which
+works like <code>ensure_that</code> but will return a logical indication of success:</p>
 
-<pre><code class="r">the_matrix &lt;- 
-  ensure_that(get_matrix(), 
-      NCOL(.) == NROW(.),
-      is.numeric(.))
+<pre><code class="r">if (check_that(my_sequence, is.numeric))
+  message(&quot;Success!&quot;)
 </code></pre>
 
 <h1>Naming arguments</h1>
@@ -352,10 +361,10 @@ call, simply use named arguments (and avoid <code>fail_with</code> and <code>err
 
 <pre><code class="r">some_object &lt;- 
   some_computation() %&gt;%
-  ensure_that(foo(a) == bar(a), a = baz(x, y, z))
+  ensure_that(foo(a, .) == bar(a, .), a = baz(x, y, z))
 </code></pre>
 
-<h1>Adding existing contracts to new contracs</h1>
+<h1>Adding existing contracts to new contracts</h1>
 
 <p>Sometimes it is useful to have a set of contracts for different purposes,
 and combine them in situations where more than one of them apply.
@@ -437,7 +446,7 @@ specifying the argument <code>fail_with</code> to <code>ensure_that</code> or
 (e.g. an empty <code>data.frame</code> with the correct columns, or maybe even just
 <code>NA</code>). More often, however, more dynamic behavior is needed, and for 
 this on passes a function of a single argument, which will be applied
-to a <code>simpleError</code> object (the one that is raised by default.):</p>
+to a <code>simpleError</code> object (the one that is raised by default):</p>
 
 <pre><code class="r">square_failure &lt;- function(e)
 {
@@ -487,7 +496,7 @@ fetch it using <code>get</code>:</p>
 }
 </code></pre>
 
-<p>It is also possible to use the dot <code>.</code> directly in anonymous error handlers
+<p>It is also possible to use the dot, <code>.</code>, directly in anonymous error handlers
 defined directly in the call to e.g. <code>ensure_that</code>.</p>
 
 <p>One can add a description to the error message without having to specify 
@@ -539,7 +548,7 @@ a scenario is to ensure that all data that are pulled into the application are
 as expected; i.e. provide some &ldquo;type safety&rdquo; to the data objects, 
 say <code>data.frame</code>s.</p>
 
-<p>Oftem you can gain a lot of security in your code if you can specify a 
+<p>Often you can gain a lot of security in your code if you can specify a 
 template for risky objects which specifies the necessary details of such objects.
 An obvious example is a <code>data.frame</code>: you may need to require specific names 
 and types of the columns and/or that it is non-empty. Maybe you have several

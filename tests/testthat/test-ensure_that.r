@@ -51,6 +51,7 @@ test_that("ensure(s)_that works", {
   )
 
   expect_identical(1:10, ensure(1:10, is.integer))
+  expect_identical(1:10, ensure(1:10, is.integer, is.numeric))
 
   expect_identical(check_that(1:10, is.vector(., "numeric")),  TRUE)
   expect_identical(check_that(1:10, is.vector(., "character")), FALSE)

@@ -1,8 +1,15 @@
-# Internal function for creating an environment for the ensures_that function.
+# Create an ensurer evironment
+#
+# Internal function for creating an environment for the \code{ensures_that}
+# function. It is used for evaluating contract validity and should have as
+# parent the environment in which the contract is created.
 #
 # @param parent The environment to use as parent for the ensurer environment.
+#
 # @param fail_with A function or value to use on error.
+#
 # @param err_desc A character string with an additional error description.
+#
 # @return an environment used for evaluation of ensurer contracts.
 ensurer_env <- function(parent, fail_with, err_desc)
 {
