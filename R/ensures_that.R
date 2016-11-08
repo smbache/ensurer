@@ -77,7 +77,7 @@
 #'
 #' # Two similar contracts, one extending the other.
 #' # Note also that custom message is used for A
-#' A <- ensures_that(all(.) > 0 ~ "Not all values are positive")
+#' A <- ensures_that(all(. > 0) ~ "Not all values are positive")
 #' B <- ensures_that(!any(is.na(.)) ~ "There are missing values", +A)
 #'
 #' B(c(-5:5, NA))
