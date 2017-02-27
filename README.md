@@ -47,10 +47,13 @@ at outset, and helps catch coding errors early on.
 
 # Installation
 
-The easiest way to install `ensurer` is using the `devtools` package:
-
-```R
+To install the current development version use devtools:
+```
 devtools::install_github("smbache/ensurer")
+```
+To install the CRAN version:
+```
+install.packages("ensurer")
 ```
 
 # Basic Examples
