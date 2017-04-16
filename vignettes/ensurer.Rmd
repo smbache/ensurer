@@ -199,6 +199,21 @@ Error: conditions failed for call '1:10 %>% ensure_character':
    * vector must be of character type. 
 ```
 
+If your `ensures_that` function specifies multiple conditions, you can specify a custom message for each condition. 
+```{r, eval = FALSE}
+ensure_multiple <- 
+  ensures_that(
+    is.character(.) ~ "vector must be of character type.",
+    length(.) > 10 ~ "input must be 10 characters or more"
+  )
+
+1:10 %>% ensure_multiple
+
+Error: conditions failed for call '1:10 %>% ensure_mpltiple':
+   * vector must be of character type. 
+   * input must be 10 characters or more 
+```
+
 # Ensuring function return values
 The `ensures_that` function also provides a useful mechanism for ensuring 
 the characteristics of function return values. This will both make functions 
